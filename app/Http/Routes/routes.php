@@ -34,4 +34,8 @@ Route::group(['middleware' => ['web']], function () {
     Route::group(['prefix' => 'admin', 'namespace' => 'Admin'], function () {
         require app_path('Http/Routes/admin.php');
     });
+
+    Route::group(['prefix' => 'api', 'namespace' => 'api'], function () {
+        require app_path('Http/Routes/api.php');
+    });
 });
