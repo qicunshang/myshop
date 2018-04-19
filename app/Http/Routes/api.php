@@ -11,4 +11,5 @@ Route::group([['prefix' => 'api', 'namespace' => 'api'], 'middleware' => ['web']
 
 
     $router->any('goods/list', ['uses' => 'GoodsController@GoodsList', 'as' => 'goods.goodsList']);
+    $router->any('goods/detail', ['uses' => 'GoodsController@detail', 'as' => 'goods.detail']);
 });
