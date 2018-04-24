@@ -46,6 +46,10 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        if ($e instanceof HttpException) {
+            $code = $e->getStatusCode();
+            return apiReturn([], '100' . $code, '没有该api');
+        }
         return parent::render($request, $e);
     }
 }

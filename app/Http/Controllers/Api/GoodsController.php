@@ -15,7 +15,9 @@ class GoodsController extends Controller
     {
         $params = $request->all();
         //排序规则
-        $orderBy = isset($params['orderBy'])?$params['orderBy']:'Id';
+        $orderBy = isset($params['orderBy'])?$params['orderBy']:'id';
+        $orderBy = explode('.', $orderBy);
+        $orderBy[1] = isset($orderBy[1])?$orderBy[1]:'DESC';
         //取出记录数
         $take = isset($params['limit'])?$params['limit']:10;
         $skip = isset($params['pageNum'])?($params['pageNum']-1) * $take:0;
@@ -30,17 +32,36 @@ class GoodsController extends Controller
                     $query->where('gName', 'like', "%{$params['gName']}%");
                 }
             })
-            ->orderBy($orderBy, 'DESC')
+            ->orderBy($orderBy[0], $orderBy[1])
+            ->orderBy('id', 'DESC')
             ->skip($skip)
             ->take($take)
             ->get();
+        foreach($list as $key=>$value){
+            $list[$key]->gImg  = $this->parseImg(DB::table('goods_img')->where('gid', $value->id)->get());
+        }
         return apiReturn($list);
     }
 
     public function detail(Request $request)
     {
         $id = $request->get('id');
+        if(!$id){
+            return apiReturn([], '100400', '缺少参数');
+        }
         $info = DB::table('goods')->where('id', $id)->get();
+        $info[0]->gImg = DB::table('goods_img')->where('gid', $info[0]->id)->get();
         return apiReturn($info);
+    }
+
+    /**
+     * 处理图片字符串，前面加上网址
+     * */
+    private function parseImg($images){
+        $data = [];
+        foreach($images as $key=>$value){
+            $data[] = 'https://' . $_SERVER["HTTP_HOST"] . $value->imgUrl;
+        }
+        return $data;
     }
 }
