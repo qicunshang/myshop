@@ -51,7 +51,7 @@ class UserController extends Controller
                         'name'          => $wxData->nickName,
                         'level'         => 0,
                         'remember_token'=> $token,
-                        'token_at' => date('Y-m-d H:i:s', time()),
+                        'token_at'      => date('Y-m-d H:i:s', time()),
                         'created_at'    => date('Y-m-d H:i:s', time()),
                         'updated_at'    => date('Y-m-d H:i:s', time()),
                     );

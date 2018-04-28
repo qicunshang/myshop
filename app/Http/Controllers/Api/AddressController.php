@@ -45,6 +45,9 @@ class AddressController extends Controller
             'user_id'=> $params['user_id'],
             'contactName'=> $params['contactName'],
             'phone'=> $params['phone'],
+            'province'=> $params['province'],
+            'city'=> $params['city'],
+            'county'=> $params['county'],
             'address'=> $params['address'],
         ];
         if(isset($params['status'])){
@@ -72,10 +75,13 @@ class AddressController extends Controller
 
         if(isset($params['contactName'])) $data['contactName'] = $params['contactName'];
         if(isset($params['phone'])) $data['phone'] = $params['phone'];
+        if(isset($params['province'])) $data['province'] = $params['province'];
+        if(isset($params['city'])) $data['city'] = $params['city'];
+        if(isset($params['county'])) $data['county'] = $params['county'];
         if(isset($params['address'])) $data['address'] = $params['address'];
         if(isset($params['status'])) $data['status'] = $params['status'];
 
-        if(DB::table('address')->where([['id', $params['id']], ['user_id', $params['user_id']]])->update($data)){
+        if((DB::table('address')->where([['id', $params['id']], ['user_id', $params['user_id']]])->update($data))!==false){
             return apiReturn([]);
         }else{
             return apiReturn([], '-1', '保存失败');

@@ -26,9 +26,11 @@ class CheckToken
             return apiReturn([],'100100','参数不合法或缺少参数');
         }
         //token不存在
-        if(!(DB::table('users')->where([['id', $params['user_id']] ,['remember_token', $params['token']]])->first())){
+        $userInfo = DB::table('users')->where([['id', $params['user_id']] ,['remember_token', $params['token']]])->first();
+        if($userInfo && (strtotime($userInfo->token_at) + 30 * 24 * 3600 > time())){
+            return $next($request);
+        }else{
             return apiReturn([],'100010','token过期或不存在');
         }
-        return $next($request);
     }
 }
