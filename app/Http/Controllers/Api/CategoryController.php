@@ -13,7 +13,15 @@ class CategoryController extends Controller
     //
     public function categoryList(Request $request)
     {
-        $list = DB::table('category')->get();
+        $params = $request->all();
+        $list = DB::table('category')
+            ->where(function($query) use($params){
+                if(isset($params['cStatus'])){
+                    $query->where('cStatus', $params['cStatus']);
+                }
+            })
+            ->orderBy('cNo', 'asc')
+            ->get();
         return apiReturn($list);
     }
 }

@@ -26,4 +26,14 @@ class NoticeController extends Controller
         }
         return apiReturn($list);
     }
+
+    public function detail(Request $request)
+    {
+        $id = $request->get('id');
+        if(!$id){
+            return apiReturn([], '100400', '缺少参数');
+        }
+        $info = DB::table('notice')->where('id', $id)->first();
+        return apiReturn($info);
+    }
 }

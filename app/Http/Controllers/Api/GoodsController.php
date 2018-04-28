@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 
+use App\Models\Goods;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\DB;
@@ -32,6 +33,11 @@ class GoodsController extends Controller
                     $query->where('gName', 'like', "%{$params['gName']}%");
                 }
             })
+            ->where(function($query) use($params){
+                if(isset($params['hot'])){
+                    $query->where('hot', $params['hot']);
+                }
+            })
             ->orderBy($orderBy[0], $orderBy[1])
             ->orderBy('id', 'DESC')
             ->skip($skip)
@@ -45,12 +51,12 @@ class GoodsController extends Controller
 
     public function detail(Request $request)
     {
-        $id = $request->get('id');
-        if(!$id){
+        $params = $request->all();
+        if(!isset($params['id'])){
             return apiReturn([], '100400', '缺少参数');
         }
-        $info = DB::table('goods')->where('id', $id)->get();
-        $info[0]->gImg = DB::table('goods_img')->where('gid', $info[0]->id)->get();
+        $m_goods = new Goods();
+        $info = $m_goods->GoodsInfo($params['id']);
         return apiReturn($info);
     }
 

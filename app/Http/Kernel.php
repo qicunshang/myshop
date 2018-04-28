@@ -60,5 +60,10 @@ class Kernel extends HttpKernel
          * 检查权限
          */
         'CheckPermission' => \App\Http\Middleware\CheckPermission::class,
+
+        /**
+         * 带token
+         * */
+        'CheckToken' => \App\Http\Middleware\CheckToken::class,
     ];
 }
