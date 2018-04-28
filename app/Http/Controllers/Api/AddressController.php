@@ -79,7 +79,10 @@ class AddressController extends Controller
         if(isset($params['city'])) $data['city'] = $params['city'];
         if(isset($params['county'])) $data['county'] = $params['county'];
         if(isset($params['address'])) $data['address'] = $params['address'];
-        if(isset($params['status'])) $data['status'] = $params['status'];
+        if(isset($params['status']) && $params['status'] == 1) {
+            $this->setDefaultAddress($params['user_id'], $params['id']);
+            $data['status'] = $params['status'];
+        }
 
         if((DB::table('address')->where([['id', $params['id']], ['user_id', $params['user_id']]])->update($data))!==false){
             return apiReturn([]);
@@ -103,5 +106,11 @@ class AddressController extends Controller
         }else{
             return apiReturn([], '-1', '删除失败');
         }
+    }
+
+    public function setDefaultAddress($user_id, $id)
+    {
+        DB::table('address')->where('user_id', $user_id)->update(['status'=>0]);
+        DB::table('address')->where('id', $id)->update(['status'=>1]);
     }
 }
