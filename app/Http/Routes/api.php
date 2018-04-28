@@ -24,6 +24,7 @@ Route::group(['middleware' => ['web', 'CheckToken']], function ($router) {
     $router->any('order/create', ['uses' => 'OrderController@create', 'as' => 'order.create']);
     $router->any('order/list', ['uses' => 'OrderController@orderList', 'as' => 'order.orderList']);
     $router->any('order/detail', ['uses' => 'OrderController@detail', 'as' => 'order.detail']);
+    $router->any('order/cancel', ['uses' => 'OrderController@cancel', 'as' => 'order.cancel']);
 
     //收货地址
     $router->any('address/list', ['uses' => 'AddressController@addressList', 'as' => 'address.list']);

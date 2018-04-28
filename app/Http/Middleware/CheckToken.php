@@ -22,6 +22,9 @@ class CheckToken
             'token' => 'required|string',
             'user_id' => 'required'
         ]);
+        if(!isset($params['token']) || empty($params['token'])){
+            return apiReturn([],'100010','token过期或不存在');
+        }
         if($validate->fails()) {
             return apiReturn([],'100100','参数不合法或缺少参数');
         }

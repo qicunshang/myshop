@@ -116,6 +116,23 @@ class OrderController extends Controller
         return apiReturn($info);
     }
 
+    public function cancel(Request $request)
+    {
+        $params = $request->all();
+        $validate = Validator::make($params, [
+            'id' => 'required',
+        ]);
+        if($validate->fails()){
+            return apiReturn([],'100100','参数不合法或缺少参数');
+        }
+
+        if(DB::table('order')->where([['id', $params['id']], ['user_id', $params['user_id']]])->update(['status'=>0])){
+            return apiReturn([]);
+        }else{
+            return apiReturn([], '-1', '删除失败');
+        }
+    }
+
 
     //生成订单编号
     private function makeNo($user_id)

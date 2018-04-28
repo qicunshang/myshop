@@ -40,7 +40,7 @@ class UserController extends Controller
                     DB::table('users')
                         ->where('id', $userInfo->id)
                         ->update([
-//                            'remember_token' => $token,
+                            'remember_token' => $token,
                             'token_at' => date('Y-m-d H:i:s', time()),
                             'updated_at' => date('Y-m-d H:i:s', time()),
                         ]);
