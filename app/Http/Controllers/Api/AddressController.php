@@ -52,8 +52,12 @@ class AddressController extends Controller
         ];
         if(isset($params['status'])){
             $data['status'] = $params['status'];
+
         }else{
             $data['status'] = 0;
+        }
+        if($data['status'] == 1){
+            $this->setDefaultAddress($params['user_id'], $params['id']);
         }
 
         if(DB::table('address')->insert($data)){
