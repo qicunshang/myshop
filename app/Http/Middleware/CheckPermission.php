@@ -16,6 +16,7 @@ class CheckPermission{
             case "admin.{$m}.store":     $permission = "{$m}.add";      break;
             case "admin.{$m}.edit":
             case "admin.{$m}.update":    $permission = "{$m}.edit";     break;
+            case "admin.{$m}.save":    $permission = "{$m}.edit";     break;
             case "admin.{$m}.destroy":   $permission = "{$m}.delete";   break;
             default : break;
         }

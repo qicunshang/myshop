@@ -1,6 +1,6 @@
 <?php
 
-Route::group(['middleware' => ['auth:admin']], function ($router) {
+Route::group(['middleware' => ['auth:admin', 'web']], function ($router) {
     $router->get('/', ['uses' => 'AdminController@index','as' => 'admin.index']);
 
     $router->resource('index', 'IndexController');
@@ -19,6 +19,22 @@ Route::group(['middleware' => ['auth:admin']], function ($router) {
     //角色管理
     $router->get('role/ajaxIndex',['uses'=>'RoleController@ajaxIndex','as'=>'admin.role.ajaxIndex']);
     $router->resource('role', 'RoleController');
+
+    //公告管理
+
+//    $router->resource('notice', 'NoticeController');
+    $router->get('notice/list',['uses'=>'NoticeController@index','as'=>'admin.notice.index']);
+    $router->get('notice/create',['uses'=>'NoticeController@create','as'=>'admin.notice.create']);
+    $router->get('notice/{id}',['uses'=>'NoticeController@edit','as'=>'admin.notice.edit']);
+    $router->post('notice/save',['uses'=>'NoticeController@save','as'=>'admin.notice.save']);
+    $router->get('notice/del/{id}',['uses'=>'NoticeController@del','as'=>'admin.notice.del']);
+
+    //商品
+    $router->get('goods/list',['uses'=>'GoodsController@index','as'=>'admin.goods.index']);
+    $router->get('goods/create',['uses'=>'GoodsController@create','as'=>'admin.goods.create']);
+    $router->get('goods/{id}',['uses'=>'GoodsController@edit','as'=>'admin.goods.edit']);
+    $router->post('goods/save',['uses'=>'GoodsController@save','as'=>'admin.goods.save']);
+    $router->get('goods/del/{id}',['uses'=>'GoodsController@del','as'=>'admin.goods.del']);
 });
 
 Route::get('login', ['uses' => 'AuthController@index','as' => 'admin.auth.index']);

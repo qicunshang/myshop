@@ -84,7 +84,7 @@ class OrderController extends Controller
         if(isset($params['comment'])) $data['comment'] = $params['comment'];
 
         if(DB::table('order')->insert($data)){
-            return apiReturn([]);
+            return apiReturn();
         }else{
             return apiReturn([], '-1', '保存失败');
         }
@@ -127,7 +127,7 @@ class OrderController extends Controller
         }
 
         if(DB::table('order')->where([['id', $params['id']], ['user_id', $params['user_id']]])->update(['status'=>0])){
-            return apiReturn([]);
+            return apiReturn();
         }else{
             return apiReturn([], '-1', '删除失败');
         }

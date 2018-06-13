@@ -89,7 +89,7 @@ class AddressController extends Controller
         }
 
         if((DB::table('address')->where([['id', $params['id']], ['user_id', $params['user_id']]])->update($data))!==false){
-            return apiReturn([]);
+            return apiReturn();
         }else{
             return apiReturn([], '-1', '保存失败');
         }
@@ -106,7 +106,7 @@ class AddressController extends Controller
         }
 
         if(DB::table('address')->where([['id', $params['id']], ['user_id', $params['user_id']]])->delete()){
-            return apiReturn([]);
+            return apiReturn();
         }else{
             return apiReturn([], '-1', '删除失败');
         }
