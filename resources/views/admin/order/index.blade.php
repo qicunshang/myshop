@@ -4,6 +4,20 @@
     <link href="{{ asset('asset_admin/assets/plugins/treeTable/vsStyle/jquery.treeTable.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('asset_admin/assets/plugins/gritter/css/jquery.gritter.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('asset_admin/assets/plugins/bootstrap-sweetalert-master/dist/sweetalert.css') }}" rel="stylesheet" type="text/css">
+    <style>
+        .expressInfo{
+            width: 400px;
+            position: absolute;
+            background-color: #ffffff;
+            border-radius: 5px;
+            padding: 20px;
+            float: left;
+            display: none;
+        }
+        .showExpressInfo:hover +.expressInfo{
+            display: block;
+        }
+    </style>
 @endsection
 
 @section('admin-content')
@@ -34,53 +48,69 @@
                     </div>
                     <div class="panel-body">
                         {{--@permission('menus.add')--}}
-                        @if(auth('admin')->user()->can('notice.add'))
+                        {{--@if(auth('admin')->user()->can('notice.add'))
                         <a href="{{ url('admin/goods/create') }}">
                             <button type="button" class="btn btn-primary m-r-5 m-b-5"><i class="fa fa-plus-square-o"></i> 新增</button>
                         </a>
-                        @endif
+                        @endif--}}
                         {{--@endpermission--}}
                         <table class="table table-bordered table-hover" id="treeTable">
                             <thead>
                             <tr>
-                                <th style="width: 22%;">商品名称</th>
-                                <th style="width: 13%;">商品类别</th>
-                                <th style="width: 13%;">商品价格</th>
-                                <th style="width: 13%;">库存</th>
-                                <th style="width: 13%;">商品状态</th>
-                                <th style="width: 13%;">添加时间</th>
-                                <th style="width: 13%;">操作</th>
+                                <th style="width: 16%;">订单编号</th>
+                                <th style="width: 12%;">商品名称</th>
+                                <th style="width: 12%;">单价</th>
+                                <th style="width: 12%;">买家</th>
+                                <th style="width: 12%;">总价</th>
+                                <th style="width: 12%;">订单状态</th>
+                                <th style="width: 12%;">创建时间</th>
+                                <th style="width: 12%;">操作</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($list as $item)
                             <tr id="{{ $item->id }}">
+                                <td>{{ $item->orderNo}}</td>
                                 <td>
-                                    @if(!empty($item->imgUrl))
-                                        <img src="{{ $item->imgUrl[0] }}" alt="" width="50">
-                                    @endif
-                                    {{ $item->gName}}
+                                    <a href="/admin/goods/{{ $item->gId }}" target="_blank">{{ $item->gName}}</a>*{{$item->number}}
                                 </td>
-                                <td>{{ $item->cName }}</td>
-                                <td>{!! $item->price !!}</td>
-                                <td>{{ $item->stock }}</td>
+                                <td>{{ $item->price }}</td>
                                 <td>
-                                    @if($item->gStatus == 0)
-                                        上架
-                                    @else
-                                        下架
+                                    {{ $item->contactName }} {{ $item->phone }}<br>
+                                    {{ $item->address }}
+                                </td>
+                                <td>{{ $item->amount }}</td>
+                                <td>
+                                    @if($item->status == -1)
+                                        已删除
+                                    @elseif($item->status == 0)
+                                        已取消
+                                    @elseif($item->status == 1)
+                                        未付款
+                                    @elseif($item->status == 2)
+                                        待发货
+                                    @elseif($item->status == 3)
+                                        待确认
+                                    @elseif($item->status == 4)
+                                        已完成
+                                    @endif
+
+                                    @if(in_array($item->status, [3, 4]))
+                                        <br>
+                                        <a class="showExpressInfo" href="JavaScript:;">查看物流</a>
+                                        <div class="expressInfo">{!! $item->expressInfo !!}</div>
                                     @endif
                                 </td>
-                                <td>{{ $item->created_at}}</td>
+                                <td>{{ $item->createDate }}</td>
                                 <td>
-                                    <a href='/admin/goods/{{ $item->id }}'>
+                                    <a href='/admin/order/{{ $item->orderNo }}'>
                                         <button type='button' class='btn btn-success btn-xs'>
                                             <i class='fa fa-pencil'> 编辑</i>
                                         </button>
                                     </a>
                                     <a href='javascript:;' data-id='1' class='btn btn-danger btn-xs destroy'>
                                         <i class='fa fa-trash'> 删除</i>
-                                        <form action='/admin/goods/del/{{ $item->id }}' method='get'  name='delete_item_1'  style='display:none'>{{ csrf_field() }}
+                                        <form action='/admin/order/del/{{ $item->orderNo }}' method='get'  name='delete_item_1'  style='display:none'>{{ csrf_field() }}
                                         </form>
                                     </a>
                                 </td>

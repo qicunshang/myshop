@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Storage;
 
 class GoodsController extends Controller
 {
-    private $notice;
     /**
      * Display a listing of the resource.
      *
@@ -22,15 +21,17 @@ class GoodsController extends Controller
     public function index()
     {
         $list = DB::table('goods')
-            ->select('goods.*', 'category.cName')
+            ->select('goods.*', 'category.cName', DB::raw('group_concat(goods_img.imgUrl) as imgUrl'))
             ->join('category', 'goods.cId', '=', 'category.id')
+            ->leftJoin('goods_img', 'goods_img.gid', '=', 'goods.id')
             ->where('category.cStatus', 1)
+            ->groupBy('goods.id')
+            ->orderBy('created_at', 'DESC')
             ->orderBy('updated_at', 'ASC')
             ->get();
-        foreach($list as $key=>$value){
-            $list[$key]->gImg  = DB::table('goods_img')->where('gid', $value->id)->get();
+        foreach($list as $key=>$item){
+            $list[$key]->imgUrl = explode(',', $item->imgUrl);
         }
-//        dd($list);
         return view('admin.goods.index', ['list' => $list]);
     }
 

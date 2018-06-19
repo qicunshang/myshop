@@ -34,53 +34,46 @@
                     </div>
                     <div class="panel-body">
                         {{--@permission('menus.add')--}}
-                        @if(auth('admin')->user()->can('notice.add'))
+                        {{--@if(auth('admin')->user()->can('notice.add'))
                         <a href="{{ url('admin/goods/create') }}">
                             <button type="button" class="btn btn-primary m-r-5 m-b-5"><i class="fa fa-plus-square-o"></i> 新增</button>
                         </a>
-                        @endif
+                        @endif--}}
                         {{--@endpermission--}}
                         <table class="table table-bordered table-hover" id="treeTable">
                             <thead>
                             <tr>
-                                <th style="width: 22%;">商品名称</th>
-                                <th style="width: 13%;">商品类别</th>
-                                <th style="width: 13%;">商品价格</th>
-                                <th style="width: 13%;">库存</th>
-                                <th style="width: 13%;">商品状态</th>
-                                <th style="width: 13%;">添加时间</th>
-                                <th style="width: 13%;">操作</th>
+                                <th style="width: 16%;">用户昵称</th>
+                                <th style="width: 12%;">openid</th>
+                                <th style="width: 16%;">用户级别</th>
+                                <th style="width: 12%;">创建时间</th>
+                                <th style="width: 12%;">上次登录</th>
+                                <th style="width: 12%;">操作</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach($list as $item)
                             <tr id="{{ $item->id }}">
+                                <td>{{ $item->name}}</td>
+                                <td>{{ $item->openid }}</td>
                                 <td>
-                                    @if(!empty($item->imgUrl))
-                                        <img src="{{ $item->imgUrl[0] }}" alt="" width="50">
-                                    @endif
-                                    {{ $item->gName}}
-                                </td>
-                                <td>{{ $item->cName }}</td>
-                                <td>{!! $item->price !!}</td>
-                                <td>{{ $item->stock }}</td>
-                                <td>
-                                    @if($item->gStatus == 0)
-                                        上架
-                                    @else
-                                        下架
+                                    @if($item->level == 0)
+                                        普通
+                                    @elseif($item->level == 1)
+                                        代理
                                     @endif
                                 </td>
-                                <td>{{ $item->created_at}}</td>
+                                <td>{{ $item->created_at }}</td>
+                                <td>{{ $item->updated_at }}</td>
                                 <td>
-                                    <a href='/admin/goods/{{ $item->id }}'>
+                                    <a href='/admin/users/{{ $item->id }}'>
                                         <button type='button' class='btn btn-success btn-xs'>
                                             <i class='fa fa-pencil'> 编辑</i>
                                         </button>
                                     </a>
                                     <a href='javascript:;' data-id='1' class='btn btn-danger btn-xs destroy'>
                                         <i class='fa fa-trash'> 删除</i>
-                                        <form action='/admin/goods/del/{{ $item->id }}' method='get'  name='delete_item_1'  style='display:none'>{{ csrf_field() }}
+                                        <form action='/admin/users/del/{{ $item->id }}' method='get'  name='delete_item_1'  style='display:none'>{{ csrf_field() }}
                                         </form>
                                     </a>
                                 </td>

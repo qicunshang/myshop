@@ -78,8 +78,7 @@
                                     </a>
                                     <a href='javascript:;' data-id='1' class='btn btn-danger btn-xs destroy'>
                                         <i class='fa fa-trash'> 删除</i>
-                                        <form action='/admin/notice/del/{{ $item->id }}' method='get'  name='delete_item_1'  style='display:none'>
-                                            <input type="hidden" name="_token" value="5S8taEchSAKlakiIlbn5cokShYf57mXWTT2mXRYN">
+                                        <form action='/admin/notice/del/{{ $item->id }}' method='get'  name='delete_item_1'  style='display:none'>{{ csrf_field() }}
                                         </form>
                                     </a>
                                 </td>

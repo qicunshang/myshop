@@ -35,6 +35,27 @@ Route::group(['middleware' => ['auth:admin', 'web']], function ($router) {
     $router->get('goods/{id}',['uses'=>'GoodsController@edit','as'=>'admin.goods.edit']);
     $router->post('goods/save',['uses'=>'GoodsController@save','as'=>'admin.goods.save']);
     $router->get('goods/del/{id}',['uses'=>'GoodsController@del','as'=>'admin.goods.del']);
+
+    //订单
+    $router->get('order/list',['uses'=>'OrderController@index','as'=>'admin.order.index']);
+    $router->get('order/create',['uses'=>'OrderController@create','as'=>'admin.order.create']);
+    $router->get('order/{id}',['uses'=>'OrderController@edit','as'=>'admin.order.edit']);
+    $router->post('order/save',['uses'=>'OrderController@save','as'=>'admin.order.save']);
+    $router->get('order/del/{id}',['uses'=>'OrderController@del','as'=>'admin.order.del']);
+
+    //商品分类
+    $router->get('category/list',['uses'=>'CategoryController@index','as'=>'admin.category.index']);
+    $router->get('category/create',['uses'=>'CategoryController@create','as'=>'admin.category.create']);
+    $router->get('category/{id}',['uses'=>'CategoryController@edit','as'=>'admin.category.edit']);
+    $router->post('category/save',['uses'=>'CategoryController@save','as'=>'admin.category.save']);
+    $router->get('category/del/{id}',['uses'=>'CategoryController@del','as'=>'admin.category.del']);
+
+    //用户
+    $router->get('users/list',['uses'=>'UsersController@index','as'=>'admin.users.index']);
+    $router->get('users/create',['uses'=>'UsersController@create','as'=>'admin.users.create']);
+    $router->get('users/{id}',['uses'=>'UsersController@edit','as'=>'admin.users.edit']);
+    $router->post('users/save',['uses'=>'UsersController@save','as'=>'admin.users.save']);
+    $router->get('users/del/{id}',['uses'=>'UsersController@del','as'=>'admin.users.del']);
 });
 
 Route::get('login', ['uses' => 'AuthController@index','as' => 'admin.auth.index']);
