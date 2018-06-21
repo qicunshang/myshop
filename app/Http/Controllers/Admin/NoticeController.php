@@ -22,7 +22,7 @@ class NoticeController extends Controller
     {
         $list = DB::table('notice')
             ->orderBy('type', 'ASC')
-            ->get();
+            ->paginate(10);
         return view('admin.notice.index', ['list' => $list]);
     }
 

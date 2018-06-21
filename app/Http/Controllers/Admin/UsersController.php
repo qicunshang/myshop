@@ -22,7 +22,7 @@ class UsersController extends Controller
     {
         $list = DB::table('users')
             ->orderBy('created_at', 'DESC')
-            ->get();
+            ->paginate(10);
 //        dd($list);
         return view('admin.users.index', ['list' => $list]);
     }

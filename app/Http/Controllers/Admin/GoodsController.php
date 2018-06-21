@@ -28,7 +28,7 @@ class GoodsController extends Controller
             ->groupBy('goods.id')
             ->orderBy('created_at', 'DESC')
             ->orderBy('updated_at', 'ASC')
-            ->get();
+            ->paginate(10);
         foreach($list as $key=>$item){
             $list[$key]->imgUrl = explode(',', $item->imgUrl);
         }

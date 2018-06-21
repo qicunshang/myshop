@@ -98,7 +98,7 @@
                                     @if(in_array($item->status, [3, 4]))
                                         <br>
                                         <a class="showExpressInfo" href="JavaScript:;">查看物流</a>
-                                        <div class="expressInfo">{!! $item->expressInfo !!}</div>
+                                        <div class="expressInfo">加载中...</div>
                                     @endif
                                 </td>
                                 <td>{{ $item->createDate }}</td>
@@ -116,6 +116,7 @@
                                 </td>
                             </tr>
                             @endforeach
+                            <tr>{!! $list->render() !!}</tr>
                             </tbody>
                         </table>
                     </div>
@@ -134,6 +135,16 @@
     <script src="{{ asset('asset_admin/assets/plugins/treeTable/jquery.treeTable.js') }}"></script>
     <script>
         $(function(){
+            $('.showExpressInfo').hover(function(){
+                if($('.expressInfo').html() == '加载中...'){
+                    var order_id = $(this).parent().parent().attr("id");
+                    $.get('/admin/express/info?order_id=' + order_id,function(data){
+                        $('.expressInfo').html(data);
+                    });
+                }
+            });
+
+
             var option = {
                 theme:'vsStyle',
                 expandLevel : 2,

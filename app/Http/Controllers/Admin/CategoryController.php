@@ -20,7 +20,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $list = DB::table('category')->where('cNo', '<>', '0')->get();
+        $list = DB::table('category')->where('cNo', '<>', '0')->paginate(10);
 //        dd($list);
         return view('admin.category.index', ['list' => $list]);
     }

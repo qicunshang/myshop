@@ -86,6 +86,7 @@
                                 </td>
                             </tr>
                             @endforeach
+                            <tr>{!! $list->render() !!}</tr>
                             </tbody>
                         </table>
                     </div>

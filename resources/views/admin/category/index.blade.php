@@ -54,7 +54,10 @@
                             @foreach($list as $item)
                             <tr id="{{ $item->id }}">
                                 <td>{{ $item->cNo}}</td>
-                                <td>{{ $item->cName}}</td>
+                                <td>
+                                    <img src="{{ $item->iconUrl }}" alt="{{ $item->iconUrl }}" width="30">
+                                    {{ $item->cName}}
+                                </td>
                                 <td>{{ $item->iconUrl }}</td>
                                 <td>
                                     @if($item->cStatus == 1)
@@ -77,6 +80,7 @@
                                 </td>
                             </tr>
                             @endforeach
+                            <tr>{!! $list->render() !!}</tr>
                             </tbody>
                         </table>
                     </div>

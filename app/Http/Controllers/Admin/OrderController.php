@@ -24,13 +24,7 @@ class OrderController extends Controller
             ->select('order.*', 'goods.gName', 'goods.price')
             ->join('goods', 'order.gId', '=', 'goods.id')
             ->orderBy('createDate', 'DESC')
-            ->get();
-        foreach($list as $key=>$item){
-            if(!empty($item->expressNo)){
-                $expressInfo = $this->htmlTraces($item->expressNameCode, $item->expressNo);
-                $list[$key]->expressInfo = $expressInfo;
-            }
-        }
+            ->paginate(10);
 //        dd($list);
         return view('admin.order.index', ['list' => $list]);
     }
@@ -129,55 +123,4 @@ class OrderController extends Controller
         $result = $this->permission->ajaxIndex($request);
         return response()->json($result,JSON_UNESCAPED_UNICODE);
     }
-
-    /**
-     * 功能说明：
-     * @param string $expressNameCode
-     * @param string $expressNo
-     * @return array
-     * @date: 2018/6/19 13:05
-     */
-    private function expressInfo($expressNameCode, $expressNo){
-        $ExpressUserId = '1353509';
-        $ApiKey = '16ba6824-c098-40db-9638-071b6c30a5f2';
-
-        $url = 'http://api.kdniao.cc/Ebusiness/EbusinessOrderHandle.aspx';
-
-        $express = [
-            'ShipperCode' => $expressNameCode,
-            'LogisticCode' => $expressNo,
-        ];
-        $params = [
-            'RequestData'   => urlencode(json_encode($express)),
-            'EBusinessID'   => $ExpressUserId,
-            'RequestType'   => 1002,
-            'DataSign'      => $this->getDataSign($express, $ApiKey),
-            'DataType'      => '2', //2-json
-        ];
-
-        $res_json = curl_request($url, false, 'post', $params);
-//        dd($res_json);
-        return json_decode($res_json, true);
-    }
-
-    private function htmlTraces($expressNameCode, $expressNo){
-        $expressInfo = $this->expressInfo($expressNameCode, $expressNo);
-        $html = '';
-        foreach($expressInfo['Traces'] as $item){
-            $html .= $item['AcceptStation'] . $item['AcceptTime'] . '<br>';
-        }
-        return $html;
-    }
-
-    /**
-     * 功能说明：
-     * @param array $data
-     * @return string $key
-     * @date: 2018/6/19 13:07
-     */
-    private function getDataSign($data, $key){
-        //(请求内容(未编码)+AppKey)进行MD5加密，然后Base64编码，最后 进行URL(utf-8)编码
-        return urlencode(base64_encode(md5(json_encode($data).$key)));
-    }
-
 }

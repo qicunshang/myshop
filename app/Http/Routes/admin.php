@@ -43,6 +43,9 @@ Route::group(['middleware' => ['auth:admin', 'web']], function ($router) {
     $router->post('order/save',['uses'=>'OrderController@save','as'=>'admin.order.save']);
     $router->get('order/del/{id}',['uses'=>'OrderController@del','as'=>'admin.order.del']);
 
+    //快递
+    $router->get('express/info',['uses'=>'ExpressController@getExpressInfo','as'=>'admin.express.info']);
+
     //商品分类
     $router->get('category/list',['uses'=>'CategoryController@index','as'=>'admin.category.index']);
     $router->get('category/create',['uses'=>'CategoryController@create','as'=>'admin.category.create']);
